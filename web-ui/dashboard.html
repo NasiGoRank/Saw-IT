@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Smart Irrigation System</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="text-gray-200 min-h-screen flex flex-col">
+
+    <!-- NAVBAR -->
+    <header class="w-full glass p-4 flex justify-between items-center sticky top-0 z-50 relative">
+        <div class="flex items-center space-x-4">
+            <div class="bg-gradient-to-r from-green-400 to-blue-500 p-2 rounded-lg">
+                <i class="fas fa-tint text-white text-xl"></i>
+            </div>
+            <h1 class="text-xl font-bold tracking-wide">Smart Irrigation System</h1>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div class="hidden md:flex gap-8 text-sm font-medium" id="desktopNav">
+                <a href="home.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-home"></i><span>Home</span>
+                </a>
+                <a href="dashboard.html" class="text-green-400 border-b-2 border-green-400 flex items-center space-x-1">
+                    <i class="fas fa-gauge-high"></i><span>Dashboard</span>
+                </a>
+                <a href="history.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-clock-rotate-left"></i><span>History</span>
+                </a>
+                <a href="automation.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-robot"></i><span>Automation</span>
+                </a>
+                <a href="chatbot.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-comment"></i><span>Chatbot</span>
+                </a>
+                <a href="settings.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-gear"></i><span>Settings</span>
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <span id="connectionIndicator" class="status-indicator status-connecting"></span>
+                <span id="connectionStatus" class="text-sm">Connecting...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE QUICK NAV -->
+    <button id="quickNavBtn"
+        class="md:hidden fixed bottom-5 right-5 z-50 rounded-full p-3 glass ring-1 ring-white/10 shadow-xl"
+        aria-label="Open navigation" aria-expanded="false">
+        <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <div id="quickNavOverlay" class="hidden fixed inset-0 z-50">
+        <!-- backdrop -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close></div>
+        <!-- sheet -->
+        <div class="absolute bottom-0 inset-x-0 p-4">
+            <div class="glass rounded-2xl overflow-hidden ring-1 ring-white/10">
+                <nav class="grid grid-cols-3 gap-2 p-3 text-sm font-medium">
+                    <a href="home.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-home"></i>Home</a>
+                    <a href="dashboard.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-gauge-high"></i>Dashboard</a>
+                    <a href="history.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-clock-rotate-left"></i>History</a>
+                    <a href="automation.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-robot"></i>Automation</a>
+                    <a href="chatbot.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-comment"></i>Chatbot</a>
+                    <a href="settings.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-gear"></i>Settings</a>
+                </nav>
+                <button class="w-full py-3 text-gray-300 hover:text-white border-t border-white/10"
+                    data-close>Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /MOBILE QUICK NAV -->
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-6 md:p-8 pb-24 md:pb-8">
+
+        <!-- Header -->
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold mb-2">Irrigation Control Panel</h2>
+            <p class="text-gray-400">Monitor and control your smart irrigation system in real-time</p>
+        </section>
+
+        <!-- Stats -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Soil Moisture -->
+            <div class="glass rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-400 text-sm">Soil Moisture</p>
+                        <p id="soilValue" class="text-3xl font-bold mt-2 text-green-400">--%</p>
+                    </div>
+                    <div class="bg-green-900/30 p-3 rounded-lg">
+                        <i class="fas fa-seedling text-green-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="w-full h-2 bg-gray-700 rounded-full mt-4">
+                    <div id="soilBar"
+                        class="h-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500"
+                        style="width:0%"></div>
+                </div>
+                <div class="mt-3 text-xs text-gray-400">
+                    <span id="soilStatusText">No data</span>
+                </div>
+            </div>
+
+            <!-- Rain Sensor -->
+            <div class="glass rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-400 text-sm">Rain Sensor</p>
+                        <p id="rainValue" class="text-3xl font-bold mt-2 text-blue-400">--%</p>
+                    </div>
+                    <div class="bg-blue-900/30 p-3 rounded-lg">
+                        <i class="fas fa-cloud-rain text-blue-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="w-full h-2 bg-gray-700 rounded-full mt-4">
+                    <div id="rainBar"
+                        class="h-2 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full transition-all duration-500"
+                        style="width:0%"></div>
+                </div>
+                <div class="mt-3 text-xs text-gray-400">
+                    <span id="rainStatusText">No data</span>
+                </div>
+            </div>
+
+            <!-- Pump Status -->
+            <div class="glass rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-400 text-sm">Pump Status</p>
+                        <p id="pumpStatus" class="text-3xl font-bold mt-2 text-yellow-300">--</p>
+                    </div>
+                    <div class="bg-yellow-900/30 p-3 rounded-lg">
+                        <i class="fas fa-water text-yellow-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span id="pumpStatusText"
+                        class="px-3 py-1 rounded-full text-sm font-medium bg-gray-700">Unknown</span>
+                </div>
+                <div class="mt-3 text-xs text-gray-400">
+                    Last action: <span id="lastPumpAction">--</span>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="glass rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-400 text-sm">System Health</p>
+                        <p id="systemHealth" class="text-3xl font-bold mt-2 text-emerald-400">--</p>
+                    </div>
+                    <div class="bg-emerald-900/30 p-3 rounded-lg">
+                        <i class="fas fa-heart-pulse text-emerald-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span id="systemHealthText" class="px-3 py-1 rounded-full text-sm font-medium bg-gray-700">No
+                        Data</span>
+                </div>
+                <div class="mt-3 text-xs text-gray-400">
+                    ESP32: <span id="esp32Status">Disconnected</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Control & Right Column -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Manual Control + System Info -->
+            <div class="space-y-6">
+                <!-- Manual Control -->
+                <div class="glass rounded-xl p-6 card-hover">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-water-pump text-cyan-400 mr-2"></i> Manual Control
+                    </h3>
+
+                    <div class="mb-6 p-4 bg-gray-800/50 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-400">Current Status:</span>
+                            <span id="pumpControlStatus" class="font-medium">Unknown</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Last Updated:</span>
+                            <span id="lastUpdate" class="font-medium">--:--:--</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button id="btnOn"
+                            class="flex-1 py-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 active:scale-95 transition text-white font-medium flex items-center justify-center space-x-2">
+                            <i class="fas fa-play"></i><span>Start</span>
+                        </button>
+                        <button id="btnOff"
+                            class="flex-1 py-3 rounded-lg bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 active:scale-95 transition text-white font-medium flex items-center justify-center space-x-2">
+                            <i class="fas fa-stop"></i><span>Stop</span>
+                        </button>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <p class="text-xs text-gray-400 mt-1">Manual override will automatically switch back to Auto
+                            Mode after a short delay.</p>
+                    </div>
+                </div>
+
+                <!-- System Information -->
+                <div class="glass rounded-xl p-6 card-hover">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-info-circle text-purple-400 mr-2"></i> System Information
+                    </h3>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between"><span class="text-gray-400">Device ID:</span><span
+                                class="font-medium">ESP32_IRRIGATION_01</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Firmware:</span><span
+                                class="font-medium">v2.1.4</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">MQTT WS:</span><span
+                                class="font-medium" id="wsServerStatus">10.233.230.83:1884</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Uptime:</span><span
+                                class="font-medium" id="uptime">0d 0h 0m</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="space-y-6">
+                <!-- WEATHER CARD -->
+                <div class="glass rounded-xl p-6 card-hover">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold flex items-center">
+                            <i class="fas fa-cloud-sun text-sky-400 mr-2"></i> Current Weather
+                        </h3>
+                        <span id="weatherUpdated" class="text-xs text-gray-400">—</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                        <div class="flex items-center space-x-3">
+                            <img id="weatherIcon" src="" alt="" class="w-12 h-12 hidden">
+                            <div>
+                                <div id="weatherTemp" class="text-3xl font-bold">--°C</div>
+                                <div id="weatherText" class="text-gray-400 text-sm">—</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between"><span class="text-gray-400">Humidity</span><span
+                                    id="weatherHumidity" class="font-medium">—%</span></div>
+                            <div class="flex justify-between"><span class="text-gray-400">Wind</span><span
+                                    id="weatherWind" class="font-medium">— km/h</span></div>
+                        </div>
+
+                        <div class="text-right">
+                            <div id="weatherLocation" class="font-semibold">—</div>
+                            <div id="weatherCountry" class="text-gray-400 text-sm">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Device Status -->
+                <div class="glass rounded-xl p-6 card-hover">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-microchip text-blue-400 mr-2"></i> Device Status
+                    </h3>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center"><i class="fas fa-seedling text-green-400 mr-3"></i><span>Soil
+                                    Moisture Sensor</span></div>
+                            <span id="soilSensorStatus" class="px-2 py-1 rounded text-xs bg-gray-700">No Data</span>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center"><i
+                                    class="fas fa-cloud-rain text-blue-400 mr-3"></i><span>Rain Sensor</span></div>
+                            <span id="rainSensorStatus" class="px-2 py-1 rounded text-xs bg-gray-700">No Data</span>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center"><i class="fas fa-water text-cyan-400 mr-3"></i><span>Water
+                                    Pump</span></div>
+                            <span id="pumpDeviceStatus" class="px-2 py-1 rounded text-xs bg-gray-700">No Data</span>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center"><i class="fas fa-wifi text-purple-400 mr-3"></i><span>WiFi
+                                    Connection</span></div>
+                            <span id="wifiStatus" class="px-2 py-1 rounded text-xs bg-gray-700">Unknown</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass mt-8 p-4 text-center text-sm text-gray-400">
+        <p>Smart Irrigation System &copy; 2025 | Embedded Systems Project - Semester 3</p>
+    </footer>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/toast.js"></script>
+
+</body>
+
+</html>

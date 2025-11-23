@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Irrigation System</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="text-gray-200 min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-gray-800">
+
+    <!-- NAVBAR -->
+    <header class="w-full glass p-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <div class="flex items-center space-x-4">
+            <div class="bg-gradient-to-r from-green-400 to-blue-500 p-2 rounded-lg shadow-lg">
+                <i class="fas fa-tint text-white text-xl"></i>
+            </div>
+            <h1 class="text-xl font-bold tracking-wide">Smart Irrigation System</h1>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div class="hidden md:flex gap-8 text-sm font-medium">
+                <a href="home.html" class="text-green-400 border-b-2 border-green-400 flex items-center space-x-1">
+                    <i class="fas fa-home"></i><span>Home</span>
+                </a>
+                <a href="dashboard.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-gauge-high"></i><span>Dashboard</span>
+                </a>
+                <a href="history.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-clock-rotate-left"></i><span>History</span>
+                </a>
+                <a href="automation.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-robot"></i><span>Automation</span>
+                </a>
+                <a href="chatbot.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-comment"></i><span>Chatbot</span>
+                </a>
+                <a href="settings.html" class="hover:text-green-400 transition flex items-center space-x-1">
+                    <i class="fas fa-gear"></i><span>Settings</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE QUICK NAV -->
+    <button id="quickNavBtn"
+        class="md:hidden fixed bottom-5 right-5 z-50 rounded-full p-3 glass ring-1 ring-white/10 shadow-xl"
+        aria-label="Open navigation" aria-expanded="false">
+        <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <div id="quickNavOverlay" class="hidden fixed inset-0 z-50">
+        <!-- backdrop -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close></div>
+        <!-- sheet -->
+        <div class="absolute bottom-0 inset-x-0 p-4">
+            <div class="glass rounded-2xl overflow-hidden ring-1 ring-white/10">
+                <nav class="grid grid-cols-3 gap-2 p-3 text-sm font-medium">
+                    <a href="home.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-home"></i>Home</a>
+                    <a href="dashboard.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-gauge-high"></i>Dashboard</a>
+                    <a href="history.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-clock-rotate-left"></i>History</a>
+                    <a href="automation.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-robot"></i>Automation</a>
+                    <a href="chatbot.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-comment"></i>Chatbot</a>
+                    <a href="settings.html"
+                        class="quick-link flex items-center justify-center gap-2 py-3 rounded-lg hover:text-emerald-400"><i
+                            class="fas fa-gear"></i>Settings</a>
+                </nav>
+                <button class="w-full py-3 text-gray-300 hover:text-white border-t border-white/10"
+                    data-close>Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /MOBILE QUICK NAV -->
+
+    <!-- MAIN HERO -->
+    <main class="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
+        <div class="glass rounded-2xl p-10 md:p-16 max-w-3xl mx-auto shadow-lg backdrop-blur-lg">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6 text-white drop-shadow-md">
+                Welcome to <span class="text-green-400">Smart Irrigation</span>
+            </h2>
+            <p class="text-gray-400 text-lg md:w-2/3 mx-auto mb-8 leading-relaxed">
+                Experience intelligent, automated irrigation powered by ESP32, live weather data, AI scheduling, and
+                Telegram notifications.
+            </p>
+
+            <a href="dashboard.html"
+                class="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 rounded-lg text-white font-semibold text-lg transition transform hover:scale-105">
+                Get Started <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- INFO SECTION -->
+    <section class="py-16 px-8 grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div class="glass rounded-xl p-6 text-center hover:scale-105 transition transform duration-300">
+            <i class="fas fa-seedling text-green-400 text-3xl mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2">Smart Monitoring</h3>
+            <p class="text-gray-400 text-sm">Track soil moisture and rainfall in real time using IoT-enabled ESP32
+                sensors.</p>
+        </div>
+        <div class="glass rounded-xl p-6 text-center hover:scale-105 transition transform duration-300">
+            <i class="fas fa-water text-blue-400 text-3xl mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2">Automated Watering</h3>
+            <p class="text-gray-400 text-sm">Irrigation runs automatically based on soil conditions and weather
+                forecasts.</p>
+        </div>
+        <div class="glass rounded-xl p-6 text-center hover:scale-105 transition transform duration-300">
+            <i class="fas fa-robot text-yellow-400 text-3xl mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2">AI & Notifications</h3>
+            <p class="text-gray-400 text-sm">AI-driven scheduling with instant alerts via Telegram and smart dashboard
+                analytics.</p>
+        </div>
+    </section>
+
+    <footer class="glass mt-8 p-4 text-center text-sm text-gray-400">
+        <p>Smart Irrigation System &copy; 2025 | Embedded Systems Project - Semester 3</p>
+    </footer>
+
+    <script src="js/nav.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/toast.js"></script>
+
+</body>
+
+</html>
