@@ -10,7 +10,7 @@ const router = express.Router();
 // ===== Gemini Setup =====
 // Using OpenAI client SDK to access Gemini via compatible endpoint
 const gemini = new OpenAI({
-    apiKey: process.env.GOOGLE_API_KEY,
+    apiKey: process.env.GOOGLE_API_KEY || "AIzaSyCIVl8alDq2jVRuHl1Xm1XrgwtzvJlz4oI",
     baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
 });
 
