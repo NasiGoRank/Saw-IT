@@ -4,21 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Water Bender</title>
+    <title>Automation | Water Bender</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="text-gray-200 min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-gray-800">
 
-    <!-- NAVBAR -->
     <header class="w-full glass p-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
         <div class="flex items-center space-x-4">
             <div class="bg-gradient-to-r from-green-400 to-blue-500 p-2 rounded-lg shadow-lg">
@@ -52,7 +48,6 @@
         </div>
     </header>
 
-    <!-- MOBILE QUICK NAV -->
     <button id="quickNavBtn"
         class="md:hidden fixed bottom-5 right-5 z-50 rounded-full p-3 glass ring-1 ring-white/10 shadow-xl"
         aria-label="Open navigation" aria-expanded="false">
@@ -60,9 +55,7 @@
     </button>
 
     <div id="quickNavOverlay" class="hidden fixed inset-0 z-50">
-        <!-- backdrop -->
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close></div>
-        <!-- sheet -->
         <div class="absolute bottom-0 inset-x-0 p-4">
             <div class="glass rounded-2xl overflow-hidden ring-1 ring-white/10">
                 <nav class="grid grid-cols-3 gap-2 p-3 text-sm font-medium">
@@ -90,115 +83,164 @@
             </div>
         </div>
     </div>
-    <!-- /MOBILE QUICK NAV -->
 
-    <!-- MAIN -->
-    <main class="flex-1 flex flex-col items-center justify-center px-6 py-16">
-        <div
-            class="glass rounded-2xl p-8 md:p-12 max-w-6xl w-full mx-auto shadow-lg backdrop-blur-lg grid md:grid-cols-2 gap-10 text-left">
+    <main class="flex-1 flex flex-col px-4 py-8 md:px-8 md:py-12 max-w-7xl mx-auto w-full">
 
-            <!-- Automation Form -->
-            <div>
-                <h2 class="text-4xl font-extrabold mb-6 text-white">
-                    <i class="fas fa-robot text-green-400 mr-2"></i> Automation & Scheduling
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+
+            <div class="glass rounded-2xl p-6 md:p-8 h-fit shadow-xl">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-green-900/50 flex items-center justify-center">
+                        <i class="fas fa-robot text-green-400 text-lg"></i>
+                    </div>
+                    Automation
                 </h2>
 
-                <form id="scheduleForm" class="grid gap-4 text-left">
+                <form id="scheduleForm" class="space-y-4">
                     <div>
-                        <label class="block text-gray-400 mb-1">Schedule Type:</label>
-                        <select id="type" class="w-full p-2 rounded bg-gray-700 text-white">
-                            <option value="once">One-Time</option>
-                            <option value="daily">Daily</option>
-                            <option value="hourly">Hourly</option>
-                            <option value="weekly">Weekly</option>
-                        </select>
+                        <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Schedule Type</label>
+                        <div class="relative">
+                            <select id="type"
+                                class="w-full p-3 pl-4 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none appearance-none transition">
+                                <option value="once">One-Time Run</option>
+                                <option value="daily">Daily Repeat</option>
+                                <option value="hourly">Hourly Interval</option>
+                                <option value="weekly">Weekly Schedule</option>
+                            </select>
+                            <div class="absolute right-3 top-3 pointer-events-none text-gray-400">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="datetimeField">
-                        <label class="block text-gray-400 mb-1">Date & Time (for One-Time):</label>
-                        <input type="datetime-local" id="datetime" class="w-full p-2 rounded bg-gray-700 text-white">
+                    <div id="datetimeField" class="animate-fade-in">
+                        <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Date & Time</label>
+                        <input type="datetime-local" id="datetime"
+                            class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none">
                     </div>
 
-                    <div id="dailyField" class="hidden">
-                        <label class="block text-gray-400 mb-1">Time (for Daily):</label>
-                        <input type="time" id="dailyTime" class="w-full p-2 rounded bg-gray-700 text-white">
+                    <div id="dailyField" class="hidden animate-fade-in">
+                        <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Time</label>
+                        <input type="time" id="dailyTime"
+                            class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none">
                     </div>
 
-                    <div id="hourlyField" class="hidden">
-                        <label class="block text-gray-400 mb-1">Repeat Interval (hours):</label>
-                        <input type="number" id="interval" min="1" class="w-full p-2 rounded bg-gray-700 text-white">
+                    <div id="hourlyField" class="hidden animate-fade-in">
+                        <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Interval (Hours)</label>
+                        <input type="number" id="interval" min="1" placeholder="e.g. 4"
+                            class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none">
                     </div>
 
-                    <div id="weeklyField" class="hidden">
-                        <label class="block text-gray-400 mb-1">Days of Week:</label>
-                        <input type="text" id="weekday" placeholder="e.g. Mon,Wed,Fri"
-                            class="w-full p-2 rounded bg-gray-700 text-white">
-                        <label class="block text-gray-400 mt-2 mb-1">Time:</label>
-                        <input type="time" id="weeklyTime" class="w-full p-2 rounded bg-gray-700 text-white">
+                    <div id="weeklyField" class="hidden animate-fade-in space-y-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Days</label>
+                            <input type="text" id="weekday" placeholder="e.g. Mon,Wed,Fri"
+                                class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none">
+                            <p class="text-[10px] text-gray-500 mt-1">Comma separated: Mon, Tue, Wed, Thu, Fri, Sat, Sun
+                            </p>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Time</label>
+                            <input type="time" id="weeklyTime"
+                                class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none">
+                        </div>
                     </div>
 
                     <div>
-                        <label class="block text-gray-400 mb-1">Duration (minutes):</label>
-                        <input type="number" id="duration" min="1" class="w-full p-2 rounded bg-gray-700 text-white"
+                        <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Duration (Minutes)</label>
+                        <input type="number" id="duration" min="1" placeholder="e.g. 10"
+                            class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none"
                             required>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="keepAfterRun" class="w-4 h-4 text-green-500">
-                        <label for="keepAfterRun" class="text-gray-400">Keep after run (don’t auto delete)</label>
+                    <div class="flex items-center gap-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/50">
+                        <div
+                            class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="toggle" id="keepAfterRun"
+                                class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <label for="keepAfterRun"
+                                class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
+                        </div>
+                        <label for="keepAfterRun" class="text-sm text-gray-300 cursor-pointer select-none">Keep schedule
+                            after running?</label>
                     </div>
 
-                    <button type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg mt-3 transition">
-                        Add Schedule
-                    </button>
+                    <div class="pt-2 space-y-3">
+                        <button type="submit"
+                            class="w-full py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 rounded-lg text-white font-bold shadow-lg transition transform active:scale-[0.98] flex justify-center items-center gap-2">
+                            <i class="fas fa-plus-circle"></i> Add Schedule
+                        </button>
 
-                    <button id="autoScheduleBtn" type="button"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-3 transition">
-                        Generate Auto Schedule (AI)
-                    </button>
-
+                        <button id="autoScheduleBtn" type="button"
+                            class="w-full py-3 bg-gray-700 hover:bg-gray-600 border border-gray-600 hover:border-gray-500 rounded-lg text-blue-300 font-medium transition flex justify-center items-center gap-2 group">
+                            <i class="fas fa-magic group-hover:text-blue-200"></i> Generate with AI
+                        </button>
+                    </div>
                 </form>
             </div>
 
-            <!-- Current Schedules -->
-            <div>
-                <h3 class="text-3xl font-semibold mt-6 mb-4 text-white">Current Schedules</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-gray-300 border border-gray-700 rounded-lg">
-                        <thead class="bg-gray-800">
-                            <tr>
-                                <th class="p-2">Type</th>
-                                <th class="p-2">Pattern</th>
-                                <th class="p-2">Duration</th>
-                                <th class="p-2">Keep?</th>
-                                <th class="p-2">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="scheduleList"></tbody>
-                    </table>
+            <div class="glass rounded-2xl p-6 md:p-8 shadow-xl flex flex-col h-fit">
+                <h3 class="text-xl md:text-2xl font-bold mb-6 text-white flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-900/50 flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-blue-400 text-lg"></i>
+                    </div>
+                    Active Schedules
+                </h3>
+
+                <div id="scheduleListContainer" class="space-y-3">
+                    <div
+                        class="text-center py-12 text-gray-500 italic bg-gray-800/30 rounded-xl border border-gray-700/50">
+                        <i class="fas fa-spinner fa-spin mb-2"></i><br>Loading schedules...
+                    </div>
                 </div>
             </div>
+
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="glass mt-8 p-4 text-center text-sm text-gray-400">
+    <footer class="glass mt-8 p-6 text-center text-xs text-gray-500">
         <p>Water Bender &copy; 2025 | Embedded Systems Project - Semester 3</p>
     </footer>
 
-    <!-- Scripts -->
-    <script>
-        // Highlight active navbar link
-        const current = location.pathname.split("/").pop();
-        document.querySelectorAll("header a").forEach(link => {
-            if (link.getAttribute("href") === current) {
-                link.classList.add("text-green-400", "border-b-2", "border-green-400");
-            } else {
-                link.classList.remove("border-b-2", "border-green-400", "text-green-400");
+    <style>
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10B981;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #10B981;
+        }
+
+        .toggle-checkbox {
+            right: 0;
+            z-index: 1;
+            border-color: #4B5563;
+            transition: all 0.3s;
+            left: 0;
+        }
+
+        .toggle-checkbox:checked {
+            left: auto;
+            right: 0;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
             }
-        });
-    </script>
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 
     <script src="js/nav.js"></script>
     <script src="js/automation.js"></script>

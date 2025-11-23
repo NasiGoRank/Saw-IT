@@ -6,13 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Assistant | Water Bender</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 
     <style>
@@ -67,99 +64,22 @@
             }
         }
 
-        /* Typing animation */
-        .typing-dots {
-            display: inline-block;
-        }
-
-        .typing-dots span {
-            animation: typing 1.4s infinite;
-            display: inline-block;
-        }
-
-        .typing-dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typing {
-
-            0%,
-            60%,
-            100% {
-                transform: translateY(0);
-            }
-
-            30% {
-                transform: translateY(-5px);
-            }
-        }
-
-        /* Glass morphism enhancements */
-        .chat-container {
-            background: rgba(17, 25, 40, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* NEW: Unified chat container with round border */
+        /* Layout Adjustments */
         .unified-chat-container {
-            position: fixed;
-            top: 52.5%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            max-width: 1800px;
-            height: 85vh;
-            background: rgba(17, 25, 40, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            z-index: 25;
-            margin-bottom: 100px;
+            /* Height responsif: 85vh di desktop, calc height di mobile untuk hindari address bar browser */
+            height: 80vh;
         }
 
-        /* Chat header inside unified container */
-        .chat-header-unified {
-            background: rgba(30, 41, 59, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            flex-shrink: 0;
-        }
-
-        /* Chat messages area inside unified container */
-        .chat-messages-unified {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(30, 41, 59, 0.5));
-        }
-
-        /* Input area inside unified container */
-        .input-area-unified {
-            background: rgba(30, 41, 59, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            flex-shrink: 0;
-        }
-
-        /* Adjust main layout to accommodate the unified chat container */
-        main {
-            min-height: calc(100vh - 80px);
+        @media (min-width: 768px) {
+            .unified-chat-container {
+                height: 85vh;
+            }
         }
     </style>
 </head>
 
 <body class="text-gray-200 min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
 
-    <!-- NAVBAR -->
     <header
         class="w-full glass p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg border-b border-gray-700">
         <div class="flex items-center space-x-4">
@@ -193,74 +113,82 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-1">
-        <div
-            class="flex h-[85vh] w-full max-w-7xl mx-auto mt-6 rounded-xl overflow-hidden shadow-2xl border border-gray-700 bg-gray-900/70 backdrop-blur-md">
+    <main class="flex-1 p-4 md:p-0 flex items-center justify-center">
 
-            <!-- SIDEBAR for chat sessions -->
-            <div class="w-64 bg-gray-900/90 border-r border-gray-700 p-4 flex flex-col">
+        <div
+            class="unified-chat-container w-full max-w-7xl mx-auto md:mt-6 rounded-xl overflow-hidden shadow-2xl border border-gray-700 bg-gray-900/70 backdrop-blur-md flex flex-col md:flex-row">
+
+            <div
+                class="w-full md:w-64 h-32 md:h-full bg-gray-900/90 border-b md:border-b-0 md:border-r border-gray-700 p-3 flex flex-col shrink-0">
                 <button onclick="newChat()"
-                    class="w-full bg-green-600 hover:bg-green-700 py-2 mb-3 rounded font-medium">
-                    + New Chat
+                    class="w-full bg-green-600 hover:bg-green-700 py-2 mb-2 rounded font-medium text-sm flex items-center justify-center gap-2 shadow-lg transition">
+                    <i class="fas fa-plus"></i> New Chat
                 </button>
 
-                <div id="chatSessions" class="flex-1 overflow-y-auto space-y-1">
-                    <!-- Chat sessions will load here dynamically -->
+                <div id="chatSessions" class="flex-1 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+                    <div class="text-center text-gray-500 text-xs mt-4">Loading chats...</div>
                 </div>
             </div>
 
-            <!-- UNIFIED CHAT AREA -->
-            <div class="flex-1 flex flex-col">
-                <!-- Chat Header -->
-                <div class="chat-header-unified">
+            <div class="flex-1 flex flex-col min-w-0 bg-gray-900/50">
+
+                <div class="bg-gray-800/80 border-b border-gray-700 p-3 md:p-4 backdrop-blur-sm">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 overflow-hidden">
                             <div
-                                class="w-8 h-8 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center">
-                                <i class="fas fa-robot text-white text-sm"></i>
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center shrink-0 shadow-lg">
+                                <i class="fas fa-robot text-white text-sm md:text-base"></i>
                             </div>
-                            <div>
-                                <h2 class="font-semibold">Irrigation AI Assistant</h2>
-                                <p class="text-gray-400 text-sm">Online • Ready to help</p>
+                            <div class="min-w-0">
+                                <h2 class="font-bold text-sm md:text-lg truncate">Irrigation Assistant</h2>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                    <p class="text-gray-400 text-xs truncate">AI Online</p>
+                                </div>
                             </div>
                         </div>
 
-                        <button onclick="clearChat()" class="text-red-400 hover:text-red-500">
-                            <i class="fas fa-trash"></i> Clear Chat
+                        <button onclick="clearChat()"
+                            class="text-gray-400 hover:text-red-400 transition p-2 rounded-lg hover:bg-red-500/10 flex items-center gap-2 text-xs md:text-sm">
+                            <i class="fas fa-trash"></i> <span class="hidden sm:inline">Clear</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Chat Messages -->
-                <div id="chatbox" class="chat-messages-unified space-y-6"></div>
-
-                <!-- Input Area -->
-                <div class="input-area-unified">
-                    <div class="max-w-4xl mx-auto">
-                        <div class="flex gap-3">
-                            <div class="flex-1 relative">
-                                <input id="userInput" type="text" placeholder="Message Irrigation AI..."
-                                    class="w-full p-3 pr-12 rounded-xl bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all duration-200 placeholder-gray-400">
-                            </div>
-                            <button id="sendBtn"
-                                class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 rounded-xl shadow transition-all duration-200 flex items-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed">
-                                <i class="fas fa-paper-plane"></i>
-                                <span class="hidden sm:inline">Send</span>
-                            </button>
-                        </div>
-                        <p class="text-center text-gray-500 text-xs mt-3">
-                            Water Bender © 2025 | Embedded Systems Project - Semester 3
-                        </p>
+                <div id="chatbox"
+                    class="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-900/30 to-gray-800/30 scroll-smooth">
+                    <div class="flex flex-col items-center justify-center h-full text-gray-500 opacity-50">
+                        <i class="fas fa-comments text-4xl mb-2"></i>
+                        <p class="text-sm">Select a chat or start a new one</p>
                     </div>
                 </div>
+
+                <div class="bg-gray-800/90 border-t border-gray-700 p-3 md:p-4">
+                    <div class="max-w-4xl mx-auto relative flex gap-2 items-end">
+                        <div
+                            class="flex-1 bg-gray-700/50 rounded-xl border border-gray-600 focus-within:border-green-500 focus-within:ring-1 focus-within:ring-green-500 transition-all">
+                            <textarea id="userInput" rows="1" placeholder="Ask about soil, crops, or weather..."
+                                class="w-full bg-transparent text-white p-3 max-h-32 focus:outline-none resize-none text-sm md:text-base"
+                                style="min-height: 44px;"></textarea>
+                        </div>
+
+                        <button id="sendBtn"
+                            class="h-[46px] w-[46px] md:w-auto md:px-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl shadow-lg flex items-center justify-center gap-2 transition transform active:scale-95 shrink-0">
+                            <i class="fas fa-paper-plane"></i>
+                            <span class="hidden md:inline font-medium">Send</span>
+                        </button>
+                    </div>
+                    <p class="text-center text-gray-600 text-[10px] mt-2">
+                        Powered by Gemini AI • Water Bender Project
+                    </p>
+                </div>
+
             </div>
         </div>
     </main>
 
-    <!-- MOBILE QUICK NAV -->
     <button id="quickNavBtn"
-        class="md:hidden fixed top-3 right-0 z-50 rounded-full p-3 glass ring-1 ring-white/10 shadow-xl"
+        class="md:hidden fixed bottom-5 right-5 z-50 rounded-full p-3 glass ring-1 ring-white/10 shadow-xl"
         aria-label="Open navigation" aria-expanded="false">
         <i class="fas fa-bars text-xl"></i>
     </button>
@@ -295,44 +223,33 @@
         </div>
     </div>
 
-    <script>
-        // Highlight active page in navbar
-        const current = location.pathname.split("/").pop();
-        const navLinks = document.querySelectorAll("header a");
-        navLinks.forEach(link => {
-            if (link.getAttribute("href") === current) {
-                link.classList.add("text-green-400", "border-b-2", "border-green-400");
-            } else {
-                link.classList.remove("border-b-2", "border-green-400", "text-green-400");
-            }
-        });
-
-        // Quick question buttons
-        document.querySelectorAll('.quick-question').forEach(button => {
-            button.addEventListener('click', function () {
-                document.getElementById('userInput').value = this.textContent.trim();
-                document.getElementById('sendBtn').click();
-            });
-        });
-
-        // Auto-focus input
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('userInput').focus();
-        });
-
-        // Enter key to send
-        document.getElementById('userInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById('sendBtn').click();
-            }
-        });
-
-    </script>
     <script src="js/nav.js"></script>
     <script src="js/chatbot.js"></script>
     <script src="js/auth-guard.js"></script>
     <script src="js/toast.js"></script>
+
+    <script>
+        const tx = document.getElementById('userInput');
+        if (tx) {
+            tx.setAttribute("style", "height:" + (tx.scrollHeight) + "px;overflow-y:hidden;");
+            tx.addEventListener("input", OnInput, false);
+        }
+
+        function OnInput() {
+            this.style.height = 0;
+            this.style.height = (this.scrollHeight) + "px";
+        }
+
+        // Enter to send (prevent default new line unless shift is held)
+        if (tx) {
+            tx.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    document.getElementById('sendBtn').click();
+                }
+            });
+        }
+    </script>
 
 </body>
 
