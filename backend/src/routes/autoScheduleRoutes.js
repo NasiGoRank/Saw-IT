@@ -10,7 +10,7 @@ const router = express.Router();
 // ===== Gemini Setup =====
 // Using OpenAI client SDK to access Gemini via compatible endpoint
 const gemini = new OpenAI({
-    apiKey: process.env.GOOGLE_API_KEY || "AIzaSyCIVl8alDq2jVRuHl1Xm1XrgwtzvJlz4oI",
+    apiKey: "AIzaSyCIVl8alDq2jVRuHl1Xm1XrgwtzvJlz4oI",
     baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
 });
 
@@ -18,7 +18,7 @@ const gemini = new OpenAI({
 router.post("/", async (req, res) => {
     try {
         const { soil, rain } = req.body;
-        const weatherKey = process.env.WEATHER_API_KEY || "AIzaSyCIVl8alDq2jVRuHl1Xm1XrgwtzvJlz4oI";
+        const weatherKey = process.env.WEATHER_API_KEY || "6a51e7780b6a4aaa82935631250611";
 
         if (!weatherKey) {
             return res.status(500).json({ error: "Missing WEATHER_API_KEY" });
