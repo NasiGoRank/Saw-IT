@@ -1,80 +1,96 @@
 const API_BASE = "https://water-bender-service.onrender.com/api/auth";
 
-// --- Load Users ---
+// --- Load Users (Responsive Grid) ---
 async function loadUsers() {
-    const tbody = document.getElementById("userTableBody");
+    // Kita target container baru, bukan tbody lagi
+    const container = document.getElementById("userListContainer");
+
     try {
         const res = await fetch(`${API_BASE}/users`);
         if (!res.ok) throw new Error("Failed to fetch users");
 
         const users = await res.json();
-        tbody.innerHTML = "";
+        container.innerHTML = "";
 
         if (users.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-gray-500">No users found.</td></tr>`;
+            container.innerHTML = `<div class="text-center py-8 text-gray-500">No users found.</div>`;
             return;
         }
 
         users.forEach(user => {
             const isLinked = user.telegram_chat_id !== null;
+            // Style badge telegram
             const telegramStatus = isLinked
-                ? `<span class="px-2 py-1 rounded-full bg-blue-900/40 text-blue-400 text-xs border border-blue-800">Linked</span>`
-                : `<span class="px-2 py-1 rounded-full bg-gray-700 text-gray-400 text-xs">Pending</span>`;
+                ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">LINKED</span>`
+                : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-700 text-gray-400">PENDING</span>`;
 
             const roleColor = user.role === 'admin' ? 'text-purple-400' : 'text-gray-300';
             const icon = user.role === 'admin' ? 'fa-user-shield' : 'fa-user';
 
-            // Escape strings
             const safeUsername = user.username.replace(/'/g, "\\'");
             const safeRole = user.role;
 
-            // LOGIKA BARU: Tentukan tombol Delete atau Gembok
+            // Tombol Delete / Lock
             let deleteActionHTML;
             if (user.username === 'admin') {
-                // Jika Admin, tampilkan gembok (tidak bisa delete)
                 deleteActionHTML = `
-                    <button class="text-gray-600 cursor-not-allowed p-2 rounded-full" title="Main Admin cannot be deleted">
-                        <i class="fas fa-lock"></i>
+                    <button class="text-gray-600 cursor-not-allowed p-2" title="Locked">
+                        <i class="fas fa-lock text-sm"></i>
                     </button>
                 `;
             } else {
-                // Jika user biasa, tampilkan tombol hapus
                 deleteActionHTML = `
                     <button onclick="deleteUser(${user.id}, '${safeUsername}')" 
-                        class="text-gray-500 hover:text-red-400 transition p-2 rounded-full hover:bg-red-900/20"
+                        class="text-gray-400 hover:text-red-400 transition p-2 rounded hover:bg-red-900/20"
                         title="Delete User">
-                        <i class="fas fa-trash"></i>
+                        <i class="fas fa-trash text-sm"></i>
                     </button>
                 `;
             }
 
-            const tr = document.createElement("tr");
-            tr.className = "border-b border-gray-700/50 hover:bg-gray-800/30 transition group";
-            tr.innerHTML = `
-                <td class="py-4 px-2 font-medium flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-gray-400">
-                        <i class="fas ${icon}"></i>
+            // Buat elemen DIV (bukan TR)
+            const item = document.createElement("div");
+            // Class ini membuat tampilan:
+            // Mobile: Kotak (Card) dengan background gelap
+            // Desktop: Grid baris biasa yang transparan
+            item.className = "relative grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 items-center p-4 md:p-3 rounded-xl bg-gray-800/40 md:bg-transparent border border-gray-700 md:border-0 md:border-b md:border-gray-700/30 hover:bg-gray-800/60 transition duration-200";
+
+            item.innerHTML = `
+                <div class="col-span-1 md:col-span-4 flex items-center justify-between md:justify-start">
+                    <span class="md:hidden text-[10px] text-gray-500 font-bold uppercase tracking-widest">User</span>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-700/50 flex items-center justify-center text-gray-400 text-xs shadow-sm">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <span class="font-medium text-sm text-gray-200">${user.username}</span>
                     </div>
-                    ${user.username}
-                </td>
-                <td class="py-4 px-2 ${roleColor} font-medium capitalize">${user.role}</td>
-                <td class="py-4 px-2 text-center">${telegramStatus}</td>
-                <td class="py-4 px-2 text-right">
+                </div>
+
+                <div class="col-span-1 md:col-span-3 flex items-center justify-between md:justify-start">
+                    <span class="md:hidden text-[10px] text-gray-500 font-bold uppercase tracking-widest">Role</span>
+                    <span class="${roleColor} capitalize text-xs font-bold tracking-wide px-2 py-1 rounded bg-gray-900/30 md:bg-transparent md:p-0">${user.role}</span>
+                </div>
+
+                <div class="col-span-1 md:col-span-3 flex items-center justify-between md:justify-center">
+                    <span class="md:hidden text-[10px] text-gray-500 font-bold uppercase tracking-widest">Telegram</span>
+                    ${telegramStatus}
+                </div>
+
+                <div class="col-span-1 md:col-span-2 flex items-center justify-end gap-1 mt-2 md:mt-0 pt-3 md:pt-0 border-t border-gray-700/50 md:border-0">
                     <button onclick="openEditModal(${user.id}, '${safeUsername}', '${safeRole}')" 
-                        class="text-gray-500 hover:text-yellow-400 transition p-2 rounded-full hover:bg-yellow-900/20 mr-1"
+                        class="text-gray-400 hover:text-yellow-400 transition p-2 rounded hover:bg-yellow-900/20"
                         title="Edit User">
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-pen text-sm"></i>
                     </button>
-                    
                     ${deleteActionHTML}
-                </td>
+                </div>
             `;
-            tbody.appendChild(tr);
+            container.appendChild(item);
         });
 
     } catch (err) {
         console.error("Error loading users:", err);
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-red-400">Error loading data.</td></tr>`;
+        container.innerHTML = `<div class="text-center py-8 text-red-400 bg-red-900/10 rounded-lg">Error loading data.</div>`;
     }
 }
 

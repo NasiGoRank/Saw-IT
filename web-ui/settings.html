@@ -5,11 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Settings | Water Bender</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -22,7 +19,6 @@
             </div>
             <h1 class="text-xl font-bold tracking-wide">Water Bender</h1>
         </div>
-
         <div class="flex items-center space-x-6">
             <div class="hidden md:flex gap-8 text-sm font-medium">
                 <a href="home.html" class="hover:text-green-400 transition flex items-center space-x-1">
@@ -52,7 +48,6 @@
         aria-label="Open navigation" aria-expanded="false">
         <i class="fas fa-bars text-xl"></i>
     </button>
-
     <div id="quickNavOverlay" class="hidden fixed inset-0 z-50">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close></div>
         <div class="absolute bottom-0 inset-x-0 p-4">
@@ -83,107 +78,108 @@
         </div>
     </div>
 
-    <main class="p-6 md:p-12 flex-1 max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-10">
-        <div class="glass rounded-2xl p-8 h-fit shadow-xl">
-            <h3 class="text-2xl font-semibold mb-6 flex items-center text-white">
+    <main class="p-4 md:p-12 flex-1 max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-6 md:gap-10">
+        <div class="glass rounded-2xl p-6 md:p-8 h-fit shadow-xl">
+            <h3 class="text-xl md:text-2xl font-semibold mb-6 flex items-center text-white">
                 <i class="fas fa-user-plus text-green-400 mr-3"></i> Add New User
             </h3>
-            <form id="addUserForm" class="space-y-5">
+            <form id="addUserForm" class="space-y-4">
                 <div>
-                    <label class="block text-sm text-gray-300 mb-2">Username</label>
+                    <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Username</label>
                     <input type="text" id="username" required
-                        class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-gray-200 focus:border-green-500 outline-none">
+                        class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none transition placeholder-gray-500">
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-300 mb-2">Password</label>
+                    <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Password</label>
                     <input type="password" id="password" required
-                        class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-gray-200 focus:border-green-500 outline-none">
+                        class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none transition placeholder-gray-500">
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-300 mb-2">Role</label>
+                    <label class="block text-xs text-gray-400 font-bold uppercase mb-1">Role</label>
                     <select id="role"
-                        class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-gray-200 focus:border-green-500 outline-none">
+                        class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-600 text-white focus:border-green-500 outline-none transition">
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
                 </div>
                 <button type="submit"
-                    class="w-full py-3 bg-green-600 hover:bg-green-700 rounded-lg text-white font-bold transition">Create
-                    Account</button>
+                    class="w-full py-3 mt-2 bg-green-600 hover:bg-green-700 rounded-lg text-white font-bold transition flex justify-center items-center gap-2">
+                    <i class="fas fa-check-circle"></i> Create Account
+                </button>
             </form>
         </div>
 
-        <div class="glass rounded-2xl p-8 shadow-xl flex flex-col">
+        <div class="glass rounded-2xl p-6 md:p-8 shadow-xl flex flex-col h-fit">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-semibold text-white"><i class="fas fa-users text-blue-400 mr-3"></i> User List
+                <h3 class="text-xl md:text-2xl font-semibold text-white flex items-center">
+                    <i class="fas fa-users text-blue-400 mr-3"></i> User List
                 </h3>
-                <button onclick="loadUsers()" class="text-gray-400 hover:text-white"><i
-                        class="fas fa-sync-alt"></i></button>
+                <button onclick="loadUsers()"
+                    class="p-2 bg-gray-800/50 rounded-lg text-gray-400 hover:text-white transition">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
             </div>
-            <div class="overflow-x-auto flex-1">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="text-gray-400 border-b border-gray-700 text-sm uppercase">
-                            <th class="py-3 px-2">User</th>
-                            <th class="py-3 px-2">Role</th>
-                            <th class="py-3 px-2 text-center">Telegram</th>
-                            <th class="py-3 px-2 text-right">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody" class="text-sm"></tbody>
-                </table>
+
+            <div class="flex flex-col w-full">
+                <div
+                    class="hidden md:grid grid-cols-12 gap-4 border-b border-gray-700 pb-3 text-gray-400 text-xs uppercase font-bold tracking-wider">
+                    <div class="col-span-4">User</div>
+                    <div class="col-span-3">Role</div>
+                    <div class="col-span-3 text-center">Telegram</div>
+                    <div class="col-span-2 text-right">Action</div>
+                </div>
+
+                <div id="userListContainer" class="space-y-3 mt-3">
+                    <div class="text-center py-8 text-gray-500 italic">Loading users...</div>
+                </div>
             </div>
         </div>
     </main>
 
     <div id="editUserModal"
-        class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
         <div
             class="bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all scale-100">
-            <div class="bg-gray-900/50 p-4 border-b border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-white"><i class="fas fa-edit text-yellow-400 mr-2"></i> Edit User</h3>
+            <div class="bg-gray-900/80 p-4 border-b border-gray-700 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white"><i class="fas fa-user-edit text-yellow-400 mr-2"></i> Edit User
+                </h3>
                 <button onclick="closeEditModal()" class="text-gray-400 hover:text-white"><i
-                        class="fas fa-times"></i></button>
+                        class="fas fa-times text-lg"></i></button>
             </div>
-
             <div class="p-6 space-y-4">
                 <input type="hidden" id="editUserId">
-
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">Username</label>
+                    <label class="block text-xs text-gray-400 mb-1 uppercase font-bold">Username</label>
                     <input type="text" id="editUsername"
-                        class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:border-yellow-400 outline-none">
+                        class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-yellow-400 outline-none">
                 </div>
-
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">Password <span class="text-xs text-gray-500">(Leave
-                            blank to keep current)</span></label>
-                    <input type="password" id="editPassword" placeholder="••••••••"
-                        class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:border-yellow-400 outline-none">
+                    <label class="block text-xs text-gray-400 mb-1 uppercase font-bold">Password <span
+                            class="text-[10px] text-gray-500 normal-case">(Leave blank to keep current)</span></label>
+                    <input type="password" id="editPassword"
+                        class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-yellow-400 outline-none">
                 </div>
-
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">Role</label>
+                    <label class="block text-xs text-gray-400 mb-1 uppercase font-bold">Role</label>
                     <select id="editRole"
-                        class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:border-yellow-400 outline-none">
+                        class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-yellow-400 outline-none">
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
                 </div>
             </div>
-
-            <div class="p-4 border-t border-gray-700 flex justify-end gap-2 bg-gray-900/30">
+            <div class="p-4 border-t border-gray-700 flex justify-end gap-3 bg-gray-900/50">
                 <button onclick="closeEditModal()"
-                    class="px-4 py-2 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition">Cancel</button>
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Cancel</button>
                 <button onclick="saveEditUser()"
-                    class="px-4 py-2 rounded bg-yellow-600 hover:bg-yellow-700 text-white font-medium shadow-lg transition">Save
+                    class="px-5 py-2 rounded-lg text-sm font-bold bg-yellow-500 hover:bg-yellow-600 text-black shadow-lg">Save
                     Changes</button>
             </div>
         </div>
     </div>
 
-    <footer class="glass mt-8 p-4 text-center text-sm text-gray-400">
-        <p>Water Bender &copy; 2025 | Embedded Systems Project - Semester 3</p>
+    <footer class="glass mt-8 p-6 text-center text-xs text-gray-500">
+        <p>Water Bender &copy; 2025 | Smart Agriculture System</p>
     </footer>
 
     <script src="js/nav.js"></script>
