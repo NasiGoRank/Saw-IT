@@ -71,9 +71,10 @@ class IrrigationDashboard {
     // ===== MQTT =====
     connectMQTT() {
         try {
+            // Koneksi ke HiveMQ Cloud via WebSocket (Port 8884)
             this.client = mqtt.connect(this.serverUrl, {
-                username: 'backend_user', // Update creds if needed
-                password: 'Irigasi2025!',
+                username: 'awikwok', // Pastikan user ini ada di HiveMQ
+                password: 'vIw$Pcm1$WT9beu',
                 clientId: 'WebDashboard_' + Math.random().toString(16).substring(2, 8)
             });
 
@@ -81,22 +82,34 @@ class IrrigationDashboard {
                 this.isConnected = true;
                 this.updateConnectionStatus('Connected', 'status-online pulse');
                 this.updateSensorStatus('active');
-                console.log(`✅ Connected to ${this.serverUrl}`);
-                this.client.subscribe('irrigation/logs');
+                console.log(`✅ Connected to HiveMQ Cloud`);
+
+                // PERBAIKAN DI SINI: Subscribe langsung ke sumber data ESP32
+                this.client.subscribe('irrigation/data');   // Data Sensor (JSON)
+                this.client.subscribe('irrigation/status'); // Status Alat (Text)
+                this.client.subscribe('irrigation/logs');   // Logs Server (Backup)
             });
 
             this.client.on('message', (topic, message) => {
                 const msg = message.toString();
-                if (topic === 'irrigation/logs') {
+
+                // 1. Jika Topik DATA (JSON dari ESP32)
+                if (topic === 'irrigation/data' || topic === 'irrigation/logs') {
                     try {
                         const data = JSON.parse(msg);
                         this.processSensorData(data);
-                    } catch {
-                        if (msg.includes("ESP32_CONNECTED") || msg.includes("ESP32_ALIVE")) {
-                            this.updateESP32Status("Connected");
-                        } else if (msg.includes("ESP32_DISCONNECTED")) {
-                            this.updateESP32Status("Disconnected");
-                        }
+                    } catch (e) {
+                        console.warn("Invalid JSON:", msg);
+                    }
+                }
+
+                // 2. Jika Topik STATUS (Text dari ESP32)
+                else if (topic === 'irrigation/status') {
+                    console.log("Status Update:", msg);
+                    if (msg.includes("CONNECTED") || msg.includes("ALIVE") || msg.includes("OK")) {
+                        this.updateESP32Status("Connected");
+                    } else if (msg.includes("DISCONNECTED")) {
+                        this.updateESP32Status("Disconnected");
                     }
                 }
             });

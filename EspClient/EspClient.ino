@@ -7,8 +7,8 @@
 // ============================
 // 1. WiFi Configuration
 // ============================
-const char* ssid = "PNJ_Hotspot";     // Ganti dengan WiFi Anda
-const char* password = "0217270036";
+const char* ssid = "PNJ_HOTSPOT";     // Ganti dengan WiFi Anda
+const char* password = "11223344";
 
 // ============================
 // 2. HiveMQ Cloud Configuration
