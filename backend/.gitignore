@@ -4,3 +4,4 @@ node_modules
 *.sqlite
 src/database/irrigation.db
 .DS_Store
+ToDo.md
